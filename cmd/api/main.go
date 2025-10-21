@@ -18,7 +18,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
 	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/files"
+	swaggerFiles "github.com/swaggo/files"
 	"go.uber.org/zap"
 
 	_ "rare-merch-exchange/docs"
@@ -49,7 +49,14 @@ func main() {
 	defer logger.Sync()
 
 	// Подключаемся к базе данных
-	db, err := repository.NewPostgresDB(cfg.Database)
+	db, err := repository.NewPostgresDB(repository.DatabaseConfig{
+		Host:     cfg.Database.Host,
+		Port:     cfg.Database.Port,
+		User:     cfg.Database.User,
+		Password: cfg.Database.Password,
+		Name:     cfg.Database.Name,
+		SSLMode:  cfg.Database.SSLMode,
+	})
 	if err != nil {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
@@ -86,7 +93,7 @@ func main() {
 	router.Use(gin.Recovery())
 
 	// Swagger документация
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(files.Handler))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Настраиваем маршруты
 	v1.SetupRoutes(router, handlers)

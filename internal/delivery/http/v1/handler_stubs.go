@@ -10,7 +10,6 @@ import (
 	"rare-merch-exchange/internal/domain/verification"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 

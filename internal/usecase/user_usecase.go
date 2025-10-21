@@ -49,23 +49,23 @@ func (uc *userUseCase) Register(req *user.CreateUserRequest) (*user.AuthResponse
 
 	// Создаём пользователя
 	newUser := &user.User{
-		ID:                uuid.New(),
-		Email:             req.Email,
-		PasswordHash:      hashedPassword,
-		Username:          req.Username,
-		FirstName:         req.FirstName,
-		LastName:          req.LastName,
-		Phone:             req.Phone,
-		Verified:          false,
-		KYCStatus:         user.KYCStatusNone,
-		Active:            true,
-		Rating:            0.0,
-		Rank:              user.UserRankNewbie,
-		Points:            0,
+		ID:                 uuid.New(),
+		Email:              req.Email,
+		PasswordHash:       hashedPassword,
+		Username:           req.Username,
+		FirstName:          req.FirstName,
+		LastName:           req.LastName,
+		Phone:              req.Phone,
+		Verified:           false,
+		KYCStatus:          user.KYCStatusNone,
+		Active:             true,
+		Rating:             0.0,
+		Rank:               user.UserRankNewbie,
+		Points:             0,
 		EmailNotifications: true,
 		PushNotifications:  true,
-		CreatedAt:         time.Now(),
-		UpdatedAt:         time.Now(),
+		CreatedAt:          time.Now(),
+		UpdatedAt:          time.Now(),
 	}
 
 	// Сохраняем в базу данных
