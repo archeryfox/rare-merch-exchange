@@ -1,0 +1,53 @@
+# Конфигурация для Rare Merch Exchange
+# Все значения можно переопределить через переменные окружения
+
+server:
+  port: "8080"
+  host: "localhost"
+  mode: "debug"
+
+database:
+  host: "localhost"
+  port: "5432"
+  user: "postgres"
+  password: "password"
+  name: "rare_merch_exchange"
+  sslmode: "disable"
+
+redis:
+  host: "localhost"
+  port: "6379"
+  password: ""
+  db: 0
+
+jwt:
+  secret: "your-super-secret-jwt-key-change-in-production"
+  expire_hours: 24
+
+upload:
+  max_size: 10485760  # 10MB
+  path: "./uploads"
+
+auction:
+  soft_close_minutes: 5
+  min_increment_percent: 5
+
+lottery:
+  max_tickets_per_user: 10
+  min_tickets: 1
+
+commission:
+  rate_verified: 0.05  # 5% для верифицированных пользователей
+  rate_regular: 0.08   # 8% для обычных пользователей
+
+escrow:
+  auto_release_days: 7
+  dispute_period_days: 3
+
+antifraud:
+  max_bids_per_minute: 10
+  suspicious_activity_threshold: 5
+
+logging:
+  level: "info"
+  format: "json"

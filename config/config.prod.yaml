@@ -1,0 +1,53 @@
+# Продакшн конфигурация для Rare Merch Exchange
+# Используется при запуске с переменной окружения GIN_MODE=release
+
+server:
+  port: "8080"
+  host: "0.0.0.0"
+  mode: "release"
+
+database:
+  host: "${DB_HOST}"
+  port: "${DB_PORT}"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  name: "${DB_NAME}"
+  sslmode: "require"
+
+redis:
+  host: "${REDIS_HOST}"
+  port: "${REDIS_PORT}"
+  password: "${REDIS_PASSWORD}"
+  db: 0
+
+jwt:
+  secret: "${JWT_SECRET}"
+  expire_hours: 24
+
+upload:
+  max_size: 52428800  # 50MB для продакшна
+  path: "/app/uploads"
+
+auction:
+  soft_close_minutes: 5
+  min_increment_percent: 5
+
+lottery:
+  max_tickets_per_user: 10
+  min_tickets: 1
+
+commission:
+  rate_verified: 0.05
+  rate_regular: 0.08
+
+escrow:
+  auto_release_days: 7
+  dispute_period_days: 3
+
+antifraud:
+  max_bids_per_minute: 10
+  suspicious_activity_threshold: 5
+
+logging:
+  level: "warn"
+  format: "json"
