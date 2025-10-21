@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"rare-merch-exchange/internal/delivery/http/v1"
+	v1 "rare-merch-exchange/internal/delivery/http/v1"
 	"rare-merch-exchange/internal/pkg/config"
 	"rare-merch-exchange/internal/repository"
 	"rare-merch-exchange/internal/usecase"
@@ -17,8 +17,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
-	"github.com/swaggo/gin-swagger"
 	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 
 	_ "rare-merch-exchange/docs"
