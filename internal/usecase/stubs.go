@@ -8,7 +8,6 @@ import (
 	"rare-merch-exchange/internal/domain/transaction"
 	"rare-merch-exchange/internal/domain/verification"
 	"rare-merch-exchange/internal/pkg/config"
-	"rare-merch-exchange/internal/repository"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"

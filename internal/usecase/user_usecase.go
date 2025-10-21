@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"fmt"
 	"rare-merch-exchange/internal/domain/user"
 	"rare-merch-exchange/internal/pkg/config"
 	"rare-merch-exchange/internal/repository"
