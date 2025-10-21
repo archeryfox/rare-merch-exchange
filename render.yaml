@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: rare-merch-exchange
+    env: go
+    buildCommand: go mod download && go mod tidy && go build -o main cmd/api/main.go
+    startCommand: ./main
+    envVars:
+      - key: GIN_MODE
+        value: release
+      - key: SERVER_PORT
+        value: 10000
+      - key: SERVER_HOST
+        value: 0.0.0.0
+      - key: DB_HOST
+        value: dpg-d3rvapq4d50c73fnc320-a
+      - key: DB_PORT
+        value: 5432
+      - key: DB_USER
+        value: rare_merch_exchange_db_user
+      - key: DB_PASSWORD
+        value: werewolfx2005!
+      - key: DB_NAME
+        value: rare_merch_exchange_db
+      - key: DB_SSL_MODE
+        value: require
+      - key: REDIS_HOST
+        value: red-d3rvarjuibrs739i7b3g
+      - key: REDIS_PORT
+        value: 6379
+      - key: REDIS_PASSWORD
+        value: werewolfx2005!
+      - key: REDIS_DB
+        value: 0
+      - key: JWT_SECRET
+        value: rare-merch-exchange-jwt-secret-2024
+      - key: JWT_EXPIRE_HOURS
+        value: 24
+      - key: LOG_LEVEL
+        value: info
+      - key: LOG_FORMAT
+        value: json
