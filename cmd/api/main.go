@@ -22,6 +22,7 @@ import (
 	"go.uber.org/zap"
 
 	_ "rare-merch-exchange/docs"
+	_ "github.com/lib/pq"
 )
 
 // @title Rare Merch Exchange API
