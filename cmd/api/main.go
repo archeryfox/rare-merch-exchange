@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -63,11 +65,25 @@ func main() {
 	}
 
 	// Подключаемся к Redis
-	rdb := redis.NewClient(&redis.Options{
+	redisOptions := &redis.Options{
 		Addr:     cfg.Redis.Addr,
 		Password: cfg.Redis.Password,
 		DB:       cfg.Redis.DB,
-	})
+	}
+	
+	// Добавляем пользователя если указан
+	if cfg.Redis.User != "" {
+		redisOptions.Username = cfg.Redis.User
+	}
+	
+	// Добавляем TLS если нужно
+	if cfg.Redis.TLS {
+		redisOptions.TLSConfig = &tls.Config{
+			ServerName: strings.Split(cfg.Redis.Addr, ":")[0],
+		}
+	}
+	
+	rdb := redis.NewClient(redisOptions)
 
 	// Проверяем подключение к Redis
 	ctx := context.Background()

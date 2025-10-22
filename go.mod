@@ -7,6 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/uuid v1.1.2
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.14.1
 	github.com/spf13/viper v1.17.0
 	github.com/swaggo/files v1.0.1
@@ -40,7 +41,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
-	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect

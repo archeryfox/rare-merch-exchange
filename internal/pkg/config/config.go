@@ -39,8 +39,10 @@ type DatabaseConfig struct {
 
 type RedisConfig struct {
 	Addr     string
+	User     string
 	Password string
 	DB       int
+	TLS      bool
 }
 
 type JWTConfig struct {
@@ -116,8 +118,10 @@ func Load() *Config {
 		},
 		Redis: RedisConfig{
 			Addr:     getEnv("REDIS_HOST", "localhost") + ":" + getEnv("REDIS_PORT", "6379"),
+			User:     getEnv("REDIS_USER", ""),
 			Password: getEnv("REDIS_PASSWORD", ""),
 			DB:       getEnvAsInt("REDIS_DB", 0),
+			TLS:      getEnv("REDIS_TLS", "false") == "true",
 		},
 		JWT: JWTConfig{
 			Secret:      getEnv("JWT_SECRET", "your-super-secret-jwt-key-change-in-production"),
