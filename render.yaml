@@ -18,7 +18,7 @@ services:
       - key: DB_USER
         value: rare_merch_exchange_db_user
       - key: DB_PASSWORD
-        value: werewolfx2005!
+        value: PVkqh10d2SSP3f6u1DSS8dp3IGUeDcrT
       - key: DB_NAME
         value: rare_merch_exchange_db
       - key: DB_SSL_MODE
@@ -28,7 +28,6 @@ services:
       - key: REDIS_PORT
         value: 6379
       - key: REDIS_PASSWORD
-        value: werewolfx2005!
       - key: REDIS_DB
         value: 0
       - key: JWT_SECRET

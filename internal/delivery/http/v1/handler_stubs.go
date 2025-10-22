@@ -23,6 +23,17 @@ func NewItemHandler(useCase item.ItemUseCase, logger *zap.Logger) *ItemHandler {
 	return &ItemHandler{useCase: useCase, logger: logger}
 }
 
+// CreateItem создание товара
+// @Summary Создать товар
+// @Tags items
+// @Accept json
+// @Produce json
+// @Param request body item.CreateItemRequest true "Данные товара"
+// @Success 201 {object} item.Item
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Security BearerAuth
+// @Router /items [post]
 func (h *ItemHandler) CreateItem(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{
@@ -31,6 +42,15 @@ func (h *ItemHandler) CreateItem(c *gin.Context) {
 	})
 }
 
+// GetItem получение товара по ID
+// @Summary Получить товар по ID
+// @Tags items
+// @Accept json
+// @Produce json
+// @Param id path string true "ID товара"
+// @Success 200 {object} item.Item
+// @Failure 404 {object} ErrorResponse
+// @Router /items/{id} [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{
@@ -55,6 +75,18 @@ func (h *ItemHandler) DeleteItem(c *gin.Context) {
 	})
 }
 
+// SearchItems поиск товаров
+// @Summary Поиск товаров
+// @Tags items
+// @Accept json
+// @Produce json
+// @Param query query string false "Поисковый запрос"
+// @Param category query string false "Категория"
+// @Param limit query int false "Лимит результатов" default(20)
+// @Param offset query int false "Смещение" default(0)
+// @Success 200 {array} item.Item
+// @Failure 400 {object} ErrorResponse
+// @Router /items [get]
 func (h *ItemHandler) SearchItems(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{
@@ -105,6 +137,17 @@ func NewAuctionHandler(useCase auction.AuctionUseCase, logger *zap.Logger) *Auct
 	return &AuctionHandler{useCase: useCase, logger: logger}
 }
 
+// CreateAuction создание аукциона
+// @Summary Создать аукцион
+// @Tags auctions
+// @Accept json
+// @Produce json
+// @Param request body auction.CreateAuctionRequest true "Данные аукциона"
+// @Success 201 {object} auction.Auction
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Security BearerAuth
+// @Router /auctions [post]
 func (h *AuctionHandler) CreateAuction(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{
@@ -113,6 +156,15 @@ func (h *AuctionHandler) CreateAuction(c *gin.Context) {
 	})
 }
 
+// GetAuction получение аукциона по ID
+// @Summary Получить аукцион по ID
+// @Tags auctions
+// @Accept json
+// @Produce json
+// @Param id path string true "ID аукциона"
+// @Success 200 {object} auction.Auction
+// @Failure 404 {object} ErrorResponse
+// @Router /auctions/{id} [get]
 func (h *AuctionHandler) GetAuction(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{
@@ -161,6 +213,18 @@ func (h *AuctionHandler) GetEndingSoonAuctions(c *gin.Context) {
 	})
 }
 
+// PlaceBid размещение ставки
+// @Summary Разместить ставку на аукцион
+// @Tags auctions
+// @Accept json
+// @Produce json
+// @Param id path string true "ID аукциона"
+// @Param request body auction.PlaceBidRequest true "Данные ставки"
+// @Success 201 {object} auction.Bid
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Security BearerAuth
+// @Router /auctions/{id}/bid [post]
 func (h *AuctionHandler) PlaceBid(c *gin.Context) {
 	// TODO: реализовать
 	c.JSON(http.StatusNotImplemented, ErrorResponse{

@@ -1,0 +1,952 @@
+basePath: /api/v1
+definitions:
+  auction.Auction:
+    properties:
+      auto_extend:
+        description: Настройки
+        type: boolean
+      buy_now_price:
+        type: number
+      created_at:
+        description: Метаданные
+        type: string
+      current_price:
+        type: number
+      deposit_amount:
+        type: number
+      end_time:
+        type: string
+      ended_at:
+        type: string
+      final_price:
+        type: number
+      id:
+        type: string
+      item_id:
+        type: string
+      min_increment:
+        type: number
+      require_deposit:
+        type: boolean
+      reserve_price:
+        type: number
+      seller_id:
+        type: string
+      soft_close_minutes:
+        type: integer
+      start_price:
+        type: number
+      start_time:
+        description: Временные параметры
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/auction.AuctionStatus'
+        description: Статус и результаты
+      total_bids:
+        type: integer
+      updated_at:
+        type: string
+      winner_id:
+        type: string
+    type: object
+  auction.AuctionStatus:
+    enum:
+    - draft
+    - active
+    - ended
+    - cancelled
+    - sold
+    - no_bids
+    - reserve_not_met
+    type: string
+    x-enum-varnames:
+    - AuctionStatusDraft
+    - AuctionStatusActive
+    - AuctionStatusEnded
+    - AuctionStatusCancelled
+    - AuctionStatusSold
+    - AuctionStatusNoBids
+    - AuctionStatusReserveNotMet
+  auction.Bid:
+    properties:
+      amount:
+        type: number
+      auction_id:
+        type: string
+      id:
+        type: string
+      is_auto_bid:
+        type: boolean
+      max_amount:
+        type: number
+      timestamp:
+        type: string
+      user_id:
+        type: string
+    type: object
+  auction.CreateAuctionRequest:
+    properties:
+      auto_extend:
+        type: boolean
+      buy_now_price:
+        minimum: 1
+        type: number
+      duration:
+        description: часы
+        maximum: 168
+        minimum: 1
+        type: integer
+      item_id:
+        type: string
+      min_increment:
+        minimum: 1
+        type: number
+      require_deposit:
+        type: boolean
+      reserve_price:
+        minimum: 1
+        type: number
+      soft_close_minutes:
+        maximum: 30
+        minimum: 1
+        type: integer
+      start_price:
+        minimum: 1
+        type: number
+    required:
+    - duration
+    - item_id
+    - min_increment
+    - start_price
+    type: object
+  auction.PlaceBidRequest:
+    properties:
+      amount:
+        minimum: 1
+        type: number
+    required:
+    - amount
+    type: object
+  item.AuthenticityGrade:
+    enum:
+    - A
+    - B
+    - C
+    - D
+    - F
+    type: string
+    x-enum-comments:
+      AuthenticityGradeA: Гарантированный оригинал
+      AuthenticityGradeB: Скорее оригинал
+      AuthenticityGradeC: Требует проверки
+      AuthenticityGradeD: Подозрительный
+      AuthenticityGradeF: Подделка
+    x-enum-descriptions:
+    - Гарантированный оригинал
+    - Скорее оригинал
+    - Требует проверки
+    - Подозрительный
+    - Подделка
+    x-enum-varnames:
+    - AuthenticityGradeA
+    - AuthenticityGradeB
+    - AuthenticityGradeC
+    - AuthenticityGradeD
+    - AuthenticityGradeF
+  item.Category:
+    enum:
+    - clothing
+    - shoes
+    - accessories
+    - toys
+    - posters
+    - collectibles
+    - electronics
+    - books
+    - other
+    type: string
+    x-enum-varnames:
+    - CategoryClothing
+    - CategoryShoes
+    - CategoryAccessories
+    - CategoryToys
+    - CategoryPosters
+    - CategoryCollectibles
+    - CategoryElectronics
+    - CategoryBooks
+    - CategoryOther
+  item.Condition:
+    enum:
+    - new
+    - like_new
+    - good
+    - fair
+    - poor
+    type: string
+    x-enum-varnames:
+    - ConditionNew
+    - ConditionLikeNew
+    - ConditionGood
+    - ConditionFair
+    - ConditionPoor
+  item.CreateItemRequest:
+    properties:
+      brand:
+        type: string
+      category:
+        $ref: '#/definitions/item.Category'
+      color:
+        type: string
+      condition:
+        $ref: '#/definitions/item.Condition'
+      description:
+        maxLength: 2000
+        minLength: 10
+        type: string
+      estimated_value:
+        minimum: 1
+        type: number
+      material:
+        type: string
+      model:
+        type: string
+      photos:
+        items:
+          type: string
+        maxItems: 10
+        minItems: 1
+        type: array
+      size:
+        type: string
+      title:
+        maxLength: 200
+        minLength: 3
+        type: string
+      year:
+        maximum: 2030
+        minimum: 1900
+        type: integer
+    required:
+    - brand
+    - category
+    - condition
+    - description
+    - estimated_value
+    - model
+    - photos
+    - title
+    - year
+    type: object
+  item.Item:
+    properties:
+      authenticity_grade:
+        $ref: '#/definitions/item.AuthenticityGrade'
+      brand:
+        type: string
+      category:
+        $ref: '#/definitions/item.Category'
+      color:
+        type: string
+      condition:
+        $ref: '#/definitions/item.Condition'
+      created_at:
+        description: Метаданные
+        type: string
+      description:
+        type: string
+      estimated_value:
+        description: Цена и состояние
+        type: number
+      id:
+        type: string
+      main_photo:
+        type: string
+      material:
+        type: string
+      model:
+        type: string
+      photos:
+        description: Фотографии
+        items:
+          type: string
+        type: array
+      seller_id:
+        type: string
+      size:
+        type: string
+      status:
+        $ref: '#/definitions/item.Status'
+      title:
+        type: string
+      updated_at:
+        type: string
+      verification_status:
+        allOf:
+        - $ref: '#/definitions/item.VerificationStatus'
+        description: Верификация
+      verified_at:
+        type: string
+      verified_by:
+        type: string
+      year:
+        type: integer
+    type: object
+  item.Status:
+    enum:
+    - draft
+    - active
+    - sold
+    - reserved
+    - archived
+    type: string
+    x-enum-varnames:
+    - StatusDraft
+    - StatusActive
+    - StatusSold
+    - StatusReserved
+    - StatusArchived
+  item.VerificationStatus:
+    enum:
+    - pending
+    - verified
+    - rejected
+    - not_required
+    type: string
+    x-enum-varnames:
+    - VerificationStatusPending
+    - VerificationStatusVerified
+    - VerificationStatusRejected
+    - VerificationStatusNotRequired
+  user.AuthResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/user.UserProfile'
+    type: object
+  user.ChangePasswordRequest:
+    properties:
+      current_password:
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - current_password
+    - new_password
+    type: object
+  user.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      username:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    - username
+    type: object
+  user.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  user.UpdateNotificationSettingsRequest:
+    properties:
+      email_notifications:
+        type: boolean
+      fcm_token:
+        type: string
+      push_notifications:
+        type: boolean
+    type: object
+  user.UpdateProfileRequest:
+    properties:
+      avatar:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      username:
+        maxLength: 20
+        minLength: 3
+        type: string
+    type: object
+  user.UserProfile:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      rank:
+        $ref: '#/definitions/user.UserRank'
+      rating:
+        type: number
+      username:
+        type: string
+      verified:
+        type: boolean
+    type: object
+  user.UserRank:
+    enum:
+    - newbie
+    - collector
+    - expert
+    - legend
+    type: string
+    x-enum-varnames:
+    - UserRankNewbie
+    - UserRankCollector
+    - UserRankExpert
+    - UserRankLegend
+  user.UserStats:
+    properties:
+      average_rating:
+        type: number
+      dispute_rate:
+        type: number
+      successful_trades:
+        type: integer
+      total_auctions_won:
+        type: integer
+      total_contests_won:
+        type: integer
+      total_earned:
+        type: number
+      total_lotteries_won:
+        type: integer
+      total_spent:
+        type: number
+    type: object
+  v1.ErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  v1.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для биржи раритетного мерча с аукционами, лотереями и конкурсами
+  title: Rare Merch Exchange API
+  version: "1.0"
+paths:
+  /auctions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные аукциона
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auction.CreateAuctionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auction.Auction'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать аукцион
+      tags:
+      - auctions
+  /auctions/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID аукциона
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auction.Auction'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Получить аукцион по ID
+      tags:
+      - auctions
+  /auctions/{id}/bid:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID аукциона
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Данные ставки
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auction.PlaceBidRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auction.Bid'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Разместить ставку на аукцион
+      tags:
+      - auctions
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Вход пользователя
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Регистрация пользователя
+      tags:
+      - auth
+  /items:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Поисковый запрос
+        in: query
+        name: query
+        type: string
+      - description: Категория
+        in: query
+        name: category
+        type: string
+      - default: 20
+        description: Лимит результатов
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Смещение
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/item.Item'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Поиск товаров
+      tags:
+      - items
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные товара
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/item.CreateItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/item.Item'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Создать товар
+      tags:
+      - items
+  /items/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID товара
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/item.Item'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      summary: Получить товар по ID
+      tags:
+      - items
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserProfile'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить публичный профиль пользователя
+      tags:
+      - users
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserProfile'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить профиль текущего пользователя
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для обновления
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновить профиль пользователя
+      tags:
+      - users
+  /users/me/notifications:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Настройки уведомлений
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateNotificationSettingsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Обновить настройки уведомлений
+      tags:
+      - users
+  /users/me/password:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные для смены пароля
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Сменить пароль
+      tags:
+      - users
+  /users/me/stats:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserStats'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить статистику пользователя
+      tags:
+      - users
+  /users/search:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Поисковый запрос
+        in: query
+        name: query
+        required: true
+        type: string
+      - default: 20
+        description: Лимит результатов
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Смещение
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.UserProfile'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Поиск пользователей
+      tags:
+      - users
+  /users/top-rated:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: 10
+        description: Лимит результатов
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/user.UserProfile'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Получить топ пользователей по рейтингу
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
